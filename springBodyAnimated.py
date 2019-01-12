@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 import itertools
 import unittest
+import numpy as np
 
 def main():
     fig, ax = plt.subplots()
@@ -21,13 +22,11 @@ class Body():
         self.dt = dt
         self.ax = ax
         self.line, = ax.plot([], [])
-
         self.ax.set_ylim(-1, 1)
         self.ax.set_xlim(0, 5)
 
     def init(self):
         self.line.set_data(self.t, self.y)
-        print(self.line.get_data()[1])
         return self.line,
 
     def __call__(self, i):
@@ -44,7 +43,8 @@ class Body():
         self.y += [self.y[-1] + (self.dt * self.v)]
         self.a = -self.y[-1]
         self.line.set_data(self.t, self.y)
-        return self.line,
+        cos = self.ax.plot(self.t, np.cos(self.t), 'r')
+        return self.line, cos
 
 class TestSimulationMethods(unittest.TestCase):
 
