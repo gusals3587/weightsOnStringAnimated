@@ -25,8 +25,6 @@ class Body():
         self.ax.set_ylim(-1, 1)
         self.ax.set_xlim(0, 5)
 
-        self.counter = 30
-
     def init(self):
         self.line.set_data(self.t, self.y)
         print(self.line.get_data()[1])
@@ -39,14 +37,13 @@ class Body():
         else:
             self.v += + self.dt * self.a
             self.t += [self.dt * i]
-        if self.counter == 0:
-            self.counter = 30
-            newXlim = i * 1.8 * self.dt
+        if self.t[-1] >= self.ax.get_xlim()[1]:
+            newXlim = self.ax.get_xlim()[1] * 2
             self.ax.set_xlim(right=newXlim)
+            pass
         self.y += [self.y[-1] + (self.dt * self.v)]
         self.a = -self.y[-1]
         self.line.set_data(self.t, self.y)
-        self.counter -= 1
         return self.line,
 
 class TestSimulationMethods(unittest.TestCase):
