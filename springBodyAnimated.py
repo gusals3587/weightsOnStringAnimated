@@ -22,8 +22,11 @@ class Body():
         self.dt = dt
         self.ax = ax
         self.line, = ax.plot([], [])
-        self.ax.set_ylim(-1, 1)
+        self.ax.set_ylim(-1.2, 1.2)
         self.ax.set_xlim(0, 5)
+        self.ax.spines['bottom'].set_position('center')
+        self.ax.spines['top'].set_visible(False)
+        self.ax.spines['right'].set_visible(False)
 
     def init(self):
         self.line.set_data(self.t, self.y)
