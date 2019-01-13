@@ -1,13 +1,12 @@
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
-import itertools
 import unittest
 import numpy as np
 
 def main():
     fig, ax = plt.subplots()
     weight = Body(y = 1.0, v = 0.0, dt = 0.1, ax = ax)
-    anim = FuncAnimation(fig, weight, frames=itertools.count(), init_func=weight.init)
+    anim = FuncAnimation(fig, weight, init_func=weight.init)
     plt.show()
 
 class Body():
@@ -18,10 +17,11 @@ class Body():
         self.y = [y]
         self.v = v
         self.a = -y
-        self.t = [0]
+        self.t = [0.0]
         self.dt = dt
         self.ax = ax
         self.line, = ax.plot([], [])
+        self.line.set_drawstyle('steps')
         self.ax.set_ylim(-1.2, 1.2)
         self.ax.set_xlim(0, 5)
         self.ax.spines['bottom'].set_position('center')
@@ -35,14 +35,12 @@ class Body():
     def __call__(self, i):
         if i == 0:
             self.v += (self.dt / 2) * self.a
-            self.t += [self.dt * i]
         else:
             self.v += + self.dt * self.a
-            self.t += [self.dt * i]
         if self.t[-1] >= self.ax.get_xlim()[1]:
             newXlim = self.ax.get_xlim()[1] * 2
             self.ax.set_xlim(right=newXlim)
-            pass
+        self.t += [self.t[-1] + self.dt]
         self.y += [self.y[-1] + (self.dt * self.v)]
         self.a = -self.y[-1]
         self.line.set_data(self.t, self.y)
